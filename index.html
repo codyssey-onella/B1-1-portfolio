@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!-- HTML5 문서 표준 선언 및 주 언어(한국어) 설정 -->
+<html lang="ko">
+<head>
+  <!-- 문자 인코딩 설정: UTF-8 다국어 지원 -->
+  <meta charset="UTF-8">
+  <!-- 뷰포트 메타 태그: 모바일 환경에서 화면 배율을 1:1로 맞추는 반응형 필수 설정 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 검색 엔진 최적화(SEO)를 위한 페이지 요약 설명 -->
+  <meta name="description" content="백엔드 엔지니어 포트폴리오 웹사이트 - Java/Spring 및 웹 표준 기술 기반">
+  <!-- 브라우저 탭에 표시될 타이틀 -->
+  <title>엔지니어 포트폴리오 | Backend & Web</title>
+  <!-- 외부 스타일시트 연결: Step 2 디자인 시스템 -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- JavaScript 메인 진입점 비차단(Non-blocking) 로드: HTML 파싱 완료 후 실행되도록 defer 적용 -->
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       헤더 영역: 로고, 네비게이션 메뉴, 다크모드 토글, 햄버거 버튼
+       ========================================================================== -->
+  <!-- 시맨틱 태그 <header>: 사이트 상단 공통 네비게이션 영역 -->
+  <header id="header" class="site-header">
+    <!-- 헤더 내부 콘텐츠 중앙 정렬 및 여백 유지를 위한 컨테이너 -->
+    <div class="header-container">
+      <!-- 사이트 로고 겸 최상단 앵커 링크 -->
+      <a href="#hero" class="logo" aria-label="홈으로 이동">PORTFOLIO</a>
+
+      <!-- 내비게이션 메뉴: Flexbox로 수평 정렬, 모바일에서는 토글형으로 전환 -->
+      <!-- 시맨틱 태그 <nav>: 주요 탐색 링크 그룹 -->
+      <nav id="nav-menu" class="nav-menu" aria-label="주요 탐색 메뉴">
+        <!-- 네비게이션 링크 목록 -->
+        <ul class="nav-list">
+          <!-- 각 섹션으로 부드럽게 이동하는 앵커(a) 태그 링크들 -->
+          <li class="nav-item"><a href="#hero" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="#skills" class="nav-link">Skills</a></li>
+          <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
+          <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- 헤더 우측 인터랙션 버튼 그룹 (다크모드 및 햄버거 메뉴) -->
+      <div class="header-actions">
+        <!-- 다크 모드 토글 버튼: Step 4에서 이벤트 바인딩 및 localStorage 동기화 -->
+        <button type="button" id="theme-toggle" class="icon-btn theme-toggle" aria-label="다크 모드 전환">
+          <!-- 테마 표시 텍스트 또는 아이콘 (JS에서 변경) -->
+          <span class="theme-icon" aria-hidden="true">🌙</span>
+        </button>
+
+        <!-- 모바일 햄버거 메뉴 토글 버튼: Step 5에서 클릭 시 메뉴 펼침 제어 -->
+        <button type="button" id="menu-toggle" class="icon-btn menu-toggle" aria-label="메뉴 열기/닫기" aria-expanded="false">
+          <!-- 햄버거 3선 바 표시용 span 엘리먼트들 -->
+          <span class="menu-bar"></span>
+          <span class="menu-bar"></span>
+          <span class="menu-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       메인 콘텐츠 영역: 5개의 핵심 섹션 포함
+       ========================================================================== -->
+  <!-- 시맨틱 태그 <main>: 문서의 유일하고 핵심적인 본문 콘텐츠 영역 -->
+  <main id="main-content">
+
+    <!-- ------------------------------------------------------------------------
+         1. Hero 섹션: 첫인상, 핵심 메시지, Call-To-Action(CTA) 버튼
+         ------------------------------------------------------------------------ -->
+    <!-- 시맨틱 태그 <section>: 독립적인 주제 단위의 영역 -->
+    <section id="hero" class="section hero-section">
+      <!-- 섹션 레이아웃 컨테이너 -->
+      <div class="container hero-container">
+        <!-- 서브 타이틀: 역할 및 직무 소개 -->
+        <p class="hero-subtitle">Backend Software Engineer</p>
+        <!-- 메인 헤드라인 타이틀: H1은 페이지당 1회 사용 권장 -->
+        <h1 class="hero-title">견고한 시스템을 만들어가는 백엔드 개발자 조성우입니다.</h1>
+        <!-- 소개 문구 요약 -->
+        <p class="hero-description">
+          비즈니스 로직을 견고한 코드로 설계하고 문제상황에 대비된 서비스를 안정적으로 운영하는 것을 지향합니다.
+        </p>
+        <!-- 행동 유도(CTA) 버튼 그룹 -->
+        <div class="hero-cta-group">
+          <!-- 프로젝트 탐색 유도 주 버튼 -->
+          <a href="#projects" class="btn btn-primary">프로젝트 보기</a>
+          <!-- 문의 섹션 이동 보조 버튼 -->
+          <a href="#contact" class="btn btn-secondary">연락하기</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         2. About 섹션: 자기소개, 프로필 이미지, 엔지니어링 철학
+         ------------------------------------------------------------------------ -->
+    <section id="about" class="section about-section">
+      <div class="container">
+        <!-- 섹션 제목 -->
+        <h2 class="section-title">About Me</h2>
+        <!-- 소개 콘텐츠 래퍼: CSS Flexbox / Grid로 2열 구성 예정 -->
+        <div class="about-wrapper">
+          <!-- 프로필 이미지 래퍼 -->
+          <div class="about-image-wrapper">
+            <!-- 프로필 사진: 스크린 리더 및 검색 엔진을 위한 명확한 alt 속성 필수 지정 -->
+            <img src="images/profile.svg" alt="엔지니어 프로필 사진" class="profile-image" width="200" height="200">
+          </div>
+          <!-- 텍스트 기반 자기소개 본문 -->
+          <!-- 시맨틱 태그 <article>: 단독으로 배포/재사용 가능한 자기완결적 소개 글 -->
+          <article class="about-text">
+            <h3>원칙을 지키며 점진적으로 개선합니다</h3>
+            <p>
+              Java 백엔드 아키텍처를 기반으로 RESTful API 설계 및 비동기 처리 시스템을 구축해왔습니다.
+              비즈니스 요구사항의 빠른 변경 속에서도 클린 코드와 객체지향 설계를 통해 유지보수하기 쉬운 시스템을 지향합니다.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         3. Skills 섹션: 기술 스택 분류별 태그/카드 목록
+         ------------------------------------------------------------------------ -->
+    <section id="skills" class="section skills-section">
+      <div class="container">
+        <h2 class="section-title">Skills & Technologies</h2>
+        <!-- 스킬 카드들을 배치할 그리드 레이아웃 래퍼 -->
+        <div class="skills-grid">
+          <!-- 백엔드 기술 카드: 시맨틱 태그 <article> 활용 -->
+          <article class="skill-card">
+            <h3 class="skill-category">Backend</h3>
+            <ul class="skill-list">
+              <li class="skill-item">Java</li>
+              <li class="skill-item">Spring Boot</li>
+              <li class="skill-item">JUnit</li>
+            </ul>
+          </article>
+
+          <!-- 데이터베이스 및 인프라 카드 -->
+          <article class="skill-card">
+            <h3 class="skill-category">Data & Infra</h3>
+            <ul class="skill-list">
+              <li class="skill-item">SQL</li>
+              <li class="skill-item">Docker</li>
+              <li class="skill-item">Linux</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         4. Projects 섹션: GitHub REST API를 통해 동적으로 렌더링될 영역
+         ------------------------------------------------------------------------ -->
+    <section id="projects" class="section projects-section">
+      <div class="container">
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-subtitle">GitHub REST API와 비동기 연동하여 최신 저장소 목록을 실시간으로 가져옵니다.</p>
+
+        <!-- GitHub API 상태 머신에 따라 동적으로 교체될 대상 컨테이너 -->
+        <!-- aria-live="polite": 비동기 렌더링 변경 사항을 보조기술에 차분하게 안내 -->
+        <div id="projects-container" class="projects-container" aria-live="polite">
+          <!-- 기본 대기 상태: Step 7 스크립트 실행 전 보여줄 초기 안내 -->
+          <div class="project-state-message">
+            <p>프로젝트 데이터를 동기화하고 있습니다...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         5. Contact 섹션: 문의 폼 및 유효성 검사 피드백 영역
+         ------------------------------------------------------------------------ -->
+    <section id="contact" class="section contact-section">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <p class="section-subtitle">프로젝트 협업 제안이나 질문이 있으시면 언제든지 메시지를 남겨주세요.</p>
+
+        <!-- 문의 폼: novalidate로 브라우저 기본 팝업 대신 JS 커스텀 유효성 검사 수행 (Step 6) -->
+        <form id="contact-form" class="contact-form" novalidate>
+          
+          <!-- 이름 입력 그룹 -->
+          <div class="form-group">
+            <!-- 시맨틱 접근성: label의 for 속성과 input의 id 속성을 1:1 매칭 -->
+            <label for="contact-name" class="form-label">성함 / 담당자명 <span class="required" aria-hidden="true">*</span></label>
+            <input type="text" id="contact-name" name="name" class="form-input" placeholder="홍길동" required autocomplete="name">
+            <!-- 유효성 검증 실패 시 에러 메시지가 동적으로 주입될 영역 -->
+            <span class="field-error" id="error-name" aria-live="polite"></span>
+          </div>
+
+          <!-- 이메일 입력 그룹 -->
+          <div class="form-group">
+            <!-- label-for와 input-id 매칭 -->
+            <label for="contact-email" class="form-label">이메일 주소 <span class="required" aria-hidden="true">*</span></label>
+            <input type="email" id="contact-email" name="email" class="form-input" placeholder="developer@example.com" required autocomplete="email">
+            <!-- 이메일 포맷 검증 에러 메시지 주입 영역 -->
+            <span class="field-error" id="error-email" aria-live="polite"></span>
+          </div>
+
+          <!-- 문의 메시지 입력 그룹 -->
+          <div class="form-group">
+            <!-- label-for와 textarea-id 매칭 -->
+            <label for="contact-message" class="form-label">문의 내용 <span class="required" aria-hidden="true">*</span></label>
+            <textarea id="contact-message" name="message" class="form-textarea" rows="5" placeholder="프로젝트 내용이나 질문을 자유롭게 입력해 주세요." required></textarea>
+            <!-- 본문 누락 에러 메시지 주입 영역 -->
+            <span class="field-error" id="error-message" aria-live="polite"></span>
+          </div>
+
+          <!-- 폼 전송 전체 결과 피드백 메시지 컨테이너 (성공 알림 또는 서버 장애 알림) -->
+          <div id="form-status" class="form-status" role="alert" aria-live="polite"></div>
+
+          <!-- 제출 버튼 -->
+          <button type="submit" id="submit-btn" class="btn btn-primary submit-btn">
+            <span>메시지 전송</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       푸터 영역: 저작권 표시, 소셜 링크
+       ========================================================================== -->
+  <!-- 시맨틱 태그 <footer>: 페이지 또는 구획의 하단 정보(저작권, 제작자, 소셜 등) -->
+  <footer id="footer" class="site-footer">
+    <div class="container footer-container">
+      <!-- 저작권 및 카피라이트 명시 -->
+      <p class="copyright">&copy; 2026 Woo. All rights reserved.</p>
+      
+      <!-- 외부 소셜/저장소 링크 목록 -->
+      <ul class="social-links">
+        <!-- rel="noopener noreferrer": 외부 링크 보안 취약점 방지 필수 속성 -->
+        <li class="social-item"><a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link">GitHub</a></li>
+        <li class="social-item"><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link">LinkedIn</a></li>
+        <li class="social-item"><a href="mailto:developer@example.com" class="social-link">Email</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       유틸리티 버튼: 화면 우측 하단 고정 맨 위로 가기 버튼
+       ========================================================================== -->
+  <!-- Step 5에서 300px 스크롤 시 화면에 표시되고 상단 부드러운 스크롤 트리거 -->
+  <button type="button" id="scroll-top-btn" class="scroll-top-btn" aria-label="화면 최상단으로 이동" title="맨 위로 이동">
+    <span aria-hidden="true">↑</span>
+  </button>
+
+</body>
+</html>

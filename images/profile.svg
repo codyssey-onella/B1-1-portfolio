@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="프로필 기본 이미지">
+  <!-- 배경 원형 -->
+  <rect width="200" height="200" rx="100" fill="#2d3748" />
+  <!-- 인물 머리 윤곽 -->
+  <circle cx="100" cy="75" r="35" fill="#e2e8f0" />
+  <!-- 인물 상체 윤곽 -->
+  <path d="M45 165 C45 125, 70 115, 100 115 C130 115, 155 125, 155 165 Z" fill="#e2e8f0" />
+</svg>

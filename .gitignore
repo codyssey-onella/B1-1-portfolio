@@ -1,0 +1,18 @@
+# 의존성 및 패키지 관리자 디렉터리 (Step 8 테스트 환경 대비)
+node_modules/
+package-lock.json
+
+# 테스트 결과 및 보고서
+test-results/
+playwright-report/
+blob-report/
+
+# OS 생성 임시 파일
+.DS_Store
+Thumbs.db
+
+# IDE 및 에디터 설정 파일
+.idea/
+.vscode/
+*.swp
+*.swo
