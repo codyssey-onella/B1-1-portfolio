@@ -383,19 +383,28 @@ button, input, textarea {
   gap: var(--space-2);
 }
 
-/* 햄버거 메뉴 바 그래픽 */
+/* 모바일 햄버거 메뉴 토글 버튼: 세로 3선 배치를 위해 flex-direction을 column으로 지정 */
+.menu-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 햄버거 메뉴 바 그래픽 (각각의 선) */
 .menu-bar {
   display: block;
   width: 18px;
   height: 2px;
   background-color: var(--text-primary);
-  margin: 3px 0;
+  border-radius: 1px;
   transition: transform var(--transition-fast), opacity var(--transition-fast);
 }
 
-/* 햄버거 메뉴 열림 상태: 3개의 막대를 'X' 형태로 전환 */
+/* 햄버거 메뉴 열림 상태: 3개의 막대를 'X' 형태로 회전 전환 */
 .menu-toggle.active .menu-bar:nth-child(1) {
-  transform: translateY(5px) rotate(45deg);
+  transform: translateY(6px) rotate(45deg);
 }
 
 .menu-toggle.active .menu-bar:nth-child(2) {
@@ -403,7 +412,7 @@ button, input, textarea {
 }
 
 .menu-toggle.active .menu-bar:nth-child(3) {
-  transform: translateY(-5px) rotate(-45deg);
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 /* --------------------------------------------------------------------------

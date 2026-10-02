@@ -24,7 +24,7 @@ function initHamburgerMenu() {
 
   // 메뉴 열림/닫힘 상태 변경 및 접근성 속성 동기화 헬퍼 함수
   const setMenuState = (isOpen) => {
-    navMenu.classList.toggle('active', isOpen);
+    navMenu.classList.toggle('active', isOpen); // force true -> 무조건 추가(set.add(true)), false-> 무조건 삭제(set.remove(false))
     menuToggle.classList.toggle('active', isOpen);
     menuToggle.setAttribute('aria-expanded', String(isOpen));
     menuToggle.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
@@ -34,8 +34,11 @@ function initHamburgerMenu() {
   menuToggle.addEventListener('click', (event) => {
     event.stopPropagation();
     const willOpen = !navMenu.classList.contains('active');
-    setMenuState(willOpen);
+    setMenuState(willOpen); // 화살표 함수로 선언해둔 함수 호출.
   });
+
+  // 아래는 클릭, 외부클릭, ESC키를 감지하여 메뉴를 닫는 이벤트 리스너들.
+  // 햄버거 메뉴가 열렸을 때 사용자가 다른 곳을 클릭 / 메뉴 외부를 클릭 / ESC 키를 누르면 메뉴가 닫힌다.
 
   // 2. 내비게이션 링크 클릭 시 모바일 메뉴 자동 닫기
   const navLinks = navMenu.querySelectorAll('.nav-link');
@@ -82,16 +85,18 @@ function initSmoothScroll() {
       }
 
       const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        event.preventDefault();
-        targetElement.scrollIntoView({
-          behavior: 'smooth'
-        });
+      if (!targetElement) {
+        return;
+      }
 
-        // 주소창 URL 해시 동기화 (화면 점프 방지)
-        if (window.history.pushState) {
-          window.history.pushState(null, '', targetId);
-        }
+      event.preventDefault();
+      targetElement.scrollIntoView({
+        behavior: 'smooth'
+      });
+
+      // 주소창 URL 해시 동기화 (preventdefault()로 인해 URL 갱신까지 같이 차단되므로 주소창 url 스택에 추가. url 공유 및 뒤로가기 지원.)
+      if (window.history.pushState) {
+        window.history.pushState(null, '', targetId);
       }
     });
   });
@@ -137,7 +142,7 @@ function initScrollEffects() {
     }
   };
 
-  // passive: true 옵션으로 스크롤 스레드의 블로킹을 방지
+  // passive: true 옵션으로 스크롤 스레드가 메인 스레드 끝날 때까지 블락되는 것을 방지
   window.addEventListener('scroll', handleScroll, { passive: true });
 
   // 상단 이동 버튼 클릭 시 맨 위로 부드럽게 스크롤
@@ -155,7 +160,8 @@ function initScrollEffects() {
 }
 
 /**
- * IntersectionObserver API를 사용하여 각 섹션이 뷰포트에 20% 이상 진입할 때 페이드인 애니메이션을 적용하는 초기화 함수.
+ * IntersectionObserver API를 사용하여 스크롤다운 시 각 section 요소가 천천히 올라오도록
+ * 각 섹션이 뷰포트에 20% 이상 진입할 때 페이드인 애니메이션을 적용하는 초기화 함수.
  * 
  * [역할 및 존재 이유]
  * 전통적인 scroll 이벤트 기반 위치 계산(getBoundingClientRect)은 메인 스레드에서
@@ -177,7 +183,9 @@ function initScrollObserver() {
     return;
   }
 
-  // 관찰 옵션: 요소가 화면에 20% 이상 노출되었을 때 콜백 트리거
+  // 콜백 및 콜백 실행할 옵션을 등록하여 section class를 가진 DOM에 등록
+
+  // 옵션: 요소가 화면에 20% 이상 노출되었을 때 콜백 트리거
   const observerOptions = {
     root: null, // 브라우저 뷰포트 기준
     rootMargin: '0px',
