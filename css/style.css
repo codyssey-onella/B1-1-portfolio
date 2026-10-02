@@ -168,10 +168,35 @@ button, input, textarea {
   padding: 0 var(--space-4);
 }
 
-/* 공통 섹션 상하 여백 */
+/* 공통 섹션 상하 여백 및 스크롤 진입 애니메이션 초기 상태 */
 .section {
+  /* 섹션 상하 여백 */
   padding: var(--space-12) 0;
+  /* 섹션 구분 경계선 */
   border-bottom: 1px solid var(--border-color);
+  /* 진입 애니메이션 초기 상태: 투명도 0 */
+  opacity: 0;
+  /* 진입 애니메이션 초기 상태: 아래로 24px 이동 */
+  transform: translateY(24px);
+  /* 뷰포트 진입 시 부드러운 전환 효과 */
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* IntersectionObserver에 의해 화면에 20% 이상 노출되었을 때 활성화되는 클래스 */
+.section.is-visible {
+  /* 투명도 100%로 페이드인 */
+  opacity: 1;
+  /* 원래 위치로 복귀 */
+  transform: translateY(0);
+}
+
+/* 사용자가 운영체제에서 모션 감소를 선호하도록 설정한 경우 애니메이션 비활성화 */
+@media (prefers-reduced-motion: reduce) {
+  .section {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* 섹션 타이틀 */
@@ -288,12 +313,13 @@ button, input, textarea {
   z-index: 100;
   background-color: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
-  transition: background-color var(--transition-normal), border-color var(--transition-normal);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
 }
 
-/* 스크롤 시 헤더에 붙을 그림자 스타일 (Step 5 인터랙션용) */
+/* 스크롤 60px 초과 시 헤더 스타일: 배경색을 보조색으로 변경하고 그림자 강조 (Step 5 인터랙션) */
 .site-header.scrolled {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background-color: var(--bg-secondary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .header-container {
@@ -365,6 +391,19 @@ button, input, textarea {
   background-color: var(--text-primary);
   margin: 3px 0;
   transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+/* 햄버거 메뉴 열림 상태: 3개의 막대를 'X' 형태로 전환 */
+.menu-toggle.active .menu-bar:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.menu-toggle.active .menu-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active .menu-bar:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
 }
 
 /* --------------------------------------------------------------------------
