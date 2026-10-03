@@ -653,6 +653,13 @@ flex와 같이, 자식 요소들은 flex 관련 속성이 없음. 배치는 부�
   box-shadow: 0 0 0 1px var(--accent-color);
 }
 
+/* 입력 필드 유효성 검증 실패(에러) 상태 시 테두리 강조 */
+.form-input.is-invalid,
+.form-textarea.is-invalid {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 1px var(--color-error);
+}
+
 /* 유효성 검사 에러 메시지 */
 .field-error {
   display: block;
