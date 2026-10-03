@@ -232,5 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initContactForm();
   }
 
-  // Step 7: GitHub REST API 연동 및 상태 머신 초기화 예정 (js/projects.js)
+  // Step 7: GitHub REST API 연동 및 상태 머신 초기화 (js/projects.js)
+  if (typeof initProjects === 'function') {
+    initProjects();
+  }
 });
