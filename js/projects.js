@@ -170,6 +170,9 @@ async function fetchProjects(container) {
   renderLoadingState(container);
 
   try {
+    // 로딩 스피너 UI 시각적 확인을 위한 1초 인위적 지연 (테스트 후 필요시 제거 가능)
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     // 2단계: 외부 GitHub REST API 비동기 호출
     const response = await fetch(GITHUB_API_URL);
 
