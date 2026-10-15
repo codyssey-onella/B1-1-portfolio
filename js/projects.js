@@ -8,6 +8,13 @@
 const GITHUB_USERNAME = 'vact19';
 const GITHUB_API_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`;
 
+// GitHub API 호출 및 시뮬레이션 모드 열거형 상수 (Pseudo-Enum)
+const FETCH_MODE = {
+  NORMAL: 'normal',
+  ERROR: 'error',
+  EMPTY: 'empty'
+};
+
 /**
  * XSS(Cross-Site Scripting) 공격 방지를 위해 특수문자를 HTML 엔티티로 치환하는 헬퍼 함수.
  * 
@@ -197,26 +204,23 @@ function renderErrorState(container, errorMessage, onRetry) {
  * Loading -> Success / Empty / Error의 4가지 상태 전이를 총괄한다.
  * 
  * @param {HTMLElement} container - 프로젝트 목록이 렌더링될 부모 DOM 컨테이너
- * @param {boolean} [forceError=false] - 에러 상태 UI 확인을 위한 의도적 예외 발생 플래그
- * @param {boolean} [forceEmpty=false] - 빈 상태 UI 확인을 위한 의도적 빈 결과 발생 플래그
+ * @param {string} [mode=FETCH_MODE.NORMAL] - 실행 모드 (FETCH_MODE.NORMAL | FETCH_MODE.ERROR | FETCH_MODE.EMPTY)
  */
-// API 디자인 구림. 번들러 환경이면 boolean flag를 별도 함수명으로 빼야 함
-async function fetchProjects(container, forceError = false, forceEmpty = false) {
+async function fetchProjects(container, mode = FETCH_MODE.NORMAL) {
   // 1단계: 로딩 상태 렌더링
   renderLoadingState(container);
 
   try {
     // 로딩 스피너 UI 시각적 확인을 위한 1.5초 인위적 지연 (테스트 후 필요시 제거 가능)
-    // await으로 흐름을 중단시키고, Promise callback 함수는 1.5초 후 Promise를 filfilled로 바꾸는 resolve()를 수행한다.
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    // 실험용 의도적 오류 발생 플래그가 켜져 있으면 강제 예외 발생
-    if (forceError) {
+    // 실험용 의도적 오류 발생 모드
+    if (mode === FETCH_MODE.ERROR) {
       throw new Error('[실험용 오류] 사용자가 의도적으로 발생시킨 네트워크 에러입니다. (GitHub 403 Rate Limit / 서버 장애 시뮬레이션)');
     }
 
-    // 실험용 의도적 빈 상태 플래그가 켜져 있으면 빈 상태 렌더링
-    if (forceEmpty) {
+    // 실험용 의도적 빈 상태 모드
+    if (mode === FETCH_MODE.EMPTY) {
       renderEmptyState(container, () => {
         fetchProjects(container);
       });
@@ -277,7 +281,7 @@ function initProjects() {
   const triggerEmptyBtn = document.getElementById('trigger-empty-btn');
   if (triggerEmptyBtn) {
     triggerEmptyBtn.addEventListener('click', () => {
-      fetchProjects(container, false, true);
+      fetchProjects(container, FETCH_MODE.EMPTY);
     });
   }
 
@@ -285,7 +289,7 @@ function initProjects() {
   const triggerErrorBtn = document.getElementById('trigger-error-btn');
   if (triggerErrorBtn) {
     triggerErrorBtn.addEventListener('click', () => {
-      fetchProjects(container, true, false);
+      fetchProjects(container, FETCH_MODE.ERROR);
     });
   }
 }
