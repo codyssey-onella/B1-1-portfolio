@@ -160,8 +160,22 @@
          ------------------------------------------------------------------------ -->
     <section id="projects" class="section projects-section">
       <div class="container">
-        <h2 class="section-title">Featured Projects</h2>
-        <p class="section-subtitle">GitHub REST API와 비동기 연동하여 최신 저장소 목록을 실시간으로 가져옵니다.</p>
+        <!-- Projects 섹션 헤더: 타이틀과 실험용 오류 발생 테스트 버튼 -->
+        <div class="projects-header">
+          <div class="projects-header-text">
+            <h2 class="section-title">Featured Projects</h2>
+            <p class="section-subtitle">GitHub REST API와 비동기 연동하여 최신 저장소 목록을 실시간으로 가져옵니다.</p>
+          </div>
+          <!-- 상태 UI 확인을 위한 실험용 테스트 버튼 그룹 (오류 및 빈 상태) -->
+          <div class="projects-test-controls">
+            <button type="button" id="trigger-empty-btn" class="btn btn-secondary test-empty-btn" title="빈 상태 UI를 확인하기 위해 프로젝트가 없는 상태를 시뮬레이션합니다">
+              📭 빈 상태 테스트
+            </button>
+            <button type="button" id="trigger-error-btn" class="btn btn-secondary test-error-btn" title="에러 상태 UI를 확인하기 위해 의도적으로 오류를 발생시킵니다">
+              ⚠️ 오류 상태 테스트
+            </button>
+          </div>
+        </div>
 
         <!-- GitHub API 상태 머신에 따라 동적으로 교체될 대상 컨테이너 -->
         <!-- aria-live="polite": 비동기 렌더링 변경 사항을 보조기술에 차분하게 안내 -->
@@ -233,13 +247,13 @@
     <div class="container footer-container">
       <!-- 저작권 및 카피라이트 명시 -->
       <p class="copyright">&copy; 2026 Woo. All rights reserved.</p>
-      
-      <!-- 외부 소셜/저장소 링크 목록 -->
+
+      <!-- 외부 소셜/저장소 링크 -->
       <ul class="social-links">
         <!-- rel="noopener noreferrer": 외부 링크 보안 취약점 방지 필수 속성 -->
-        <li class="social-item"><a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link">GitHub</a></li>
-        <li class="social-item"><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link">LinkedIn</a></li>
-        <li class="social-item"><a href="mailto:developer@example.com" class="social-link">Email</a></li>
+        <li class="social-item">
+          <a href="https://github.com/vact19" target="_blank" rel="noopener noreferrer" class="social-link">GitHub</a>
+        </li>
       </ul>
     </div>
   </footer>

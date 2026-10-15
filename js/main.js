@@ -192,6 +192,10 @@ function initScrollObserver() {
     threshold: 0.2 // 20% 임계값
   };
 
+  /**
+   * @param {IntersectionObserverEntry[]} entries // <- 타입 힌트
+   * @param {IntersectionObserver} observer
+   */
   const observerCallback = (entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {

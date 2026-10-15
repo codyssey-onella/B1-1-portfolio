@@ -550,6 +550,48 @@ flex와 같이, 자식 요소들은 flex 관련 속성이 없음. 배치는 부�
 /* --------------------------------------------------------------------------
    10. Projects 섹션 (GitHub API 연동 카드용 스타일)
    -------------------------------------------------------------------------- */
+/* Projects 헤더: 타이틀과 테스트 버튼 좌우 배치 */
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.projects-header-text .section-title,
+.projects-header-text .section-subtitle {
+  margin-bottom: var(--space-2);
+}
+
+/* 실험용 상태 테스트 버튼 그룹 (오류, 빈 상태) */
+.projects-test-controls {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.test-error-btn,
+.test-empty-btn {
+  font-size: var(--font-xs);
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-secondary);
+  border-style: dashed;
+}
+
+.test-error-btn:hover {
+  border-color: var(--color-error);
+  color: var(--color-error);
+  background-color: transparent;
+}
+
+.test-empty-btn:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background-color: transparent;
+}
+
 /* CSS Grid: 2차원 반응형 격자 배치 (auto-fit과 minmax로 화면 너비에 따라 열 수 자동 조절) */
 .projects-container {
   display: grid;
@@ -626,7 +668,7 @@ flex와 같이, 자식 요소들은 flex 관련 속성이 없음. 배치는 부�
 .project-card-title a:hover {
   color: var(--accent-color);
   text-decoration: underline;
-}
+} 
 
 .project-card-desc {
   font-size: var(--font-sm);
@@ -821,7 +863,7 @@ flex와 같이, 자식 요소들은 flex 관련 속성이 없음. 배치는 부�
     border-bottom: none;
     padding: 0;
     box-shadow: none;
-    margin-left: auto;
+    margin-left: auto; /* menu가 가운데 요소이므로, 부모의 justify-content space-between을 무시하고 우측 끝에 붙음*/
     margin-right: var(--space-4);
   }
 

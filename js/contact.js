@@ -149,9 +149,9 @@ function initContactForm() {
 
   // 2. 폼 제출(submit) 이벤트 리스너 등록
   form.addEventListener('submit', (event) => {
-    // 서블릿 컨테이너의 기본 폼 전송 파이프라인 가로채기 (페이지 새로고침 방지)
-    event.preventDefault();
-    clearFormStatus();
+    // 브라우저의 기본 폼 전송 동작(HTTP 요청 및 페이지 새로고침) 가로채기
+    // 기본적으로 자기 URL로 GET요청을 보내고, Query String을 주소창에 박아서 전송함. 
+    event.preventDefault(); 
 
     let isFormValid = true;
     let firstInvalidField = null;
@@ -163,7 +163,7 @@ function initContactForm() {
       if (!isValid) {
         setFieldError(field, message);
         isFormValid = false;
-        if (!firstInvalidField) {
+        if (!firstInvalidField) { // 여러 필드에서 동시에 에러가 났을 때, 맨 위에 커서 포커스를 옮겨주기 위함
           firstInvalidField = field;
         }
       } else {

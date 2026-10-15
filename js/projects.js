@@ -33,10 +33,31 @@ function escapeHtml(str) {
 /**
  * 단일 GitHub 저장소 객체를 받아 ES6 템플릿 리터럴 기반의 프로젝트 카드 HTML 문자열을 반환하는 함수.
  * 
- * [역할 및 존재 이유]
- * Java 8 Stream의 .map(repo -> toCardHtml(repo))과 같이,
- * DTO 성격의 저장소 객체에서 필요한 프로퍼티(이름, 링크, 설명, 언어, 스타 수)를 구조분해 할당으로 추출하고
- * 마크업 템플릿으로 가공하여 반환한다.
+ * [GitHub REST API (`GET /users/{username}/repos`) 수신 객체 스펙 (JSON Schema)]
+ * ```json
+ * {
+ *   "type": "object",
+ *   "required": ["name", "html_url", "stargazers_count"],
+ *   "properties": {
+ *     "name": { "type": "string", "description": "저장소 이름 (예: 'portfolio')" },
+ *     "html_url": { "type": "string", "format": "uri", "description": "GitHub 저장소 웹페이지 URL" },
+ *     "description": { "type": ["string", "null"], "description": "저장소 소개글 (미작성 시 null)" },
+ *     "stargazers_count": { "type": "integer", "description": "스타(Star) 개수" },
+ *     "language": { "type": ["string", "null"], "description": "주 사용 언어 (예: 'JavaScript', 미감지 시 null)" }
+ *   }
+ * }
+ * ```
+ * 
+ * [실제 수신 데이터 샘플]
+ * ```json
+ * {
+ *   "name": "B1-1-portfolio",
+ *   "html_url": "https://github.com/codyssey-onella/B1-1-portfolio",
+ *   "description": "반응형 포트폴리오 웹사이트",
+ *   "stargazers_count": 5,
+ *   "language": "JavaScript"
+ * }
+ * ```
  * 
  * @param {Object} repo - GitHub REST API 저장소 응답 단건 객체
  * @returns {string} 완성된 프로젝트 카드 HTML 문자열
@@ -107,20 +128,33 @@ function renderSuccessState(container, repos) {
 }
 
 /**
- * 3. 빈 데이터(Empty) 상태 UI를 렌더링하는 함수.
+ * 3. 빈 데이터(Empty) 상태 UI를 렌더링하고 선택적 [다시 시도] 이벤트를 바인딩하는 함수.
  * 
  * [역할 및 존재 이유]
  * API 응답은 정상이지만 계정에 공개 저장소가 없거나 필터 결과가 0건일 때,
  * 텅 빈 화면 대신 직관적인 안내문을 렌더링하여 사용자 혼선을 방지한다.
  * 
  * @param {HTMLElement} container - 렌더링 대상 컨테이너 요소
+ * @param {Function} [onRetry] - [다시 시도] 버튼 클릭 시 재실행할 콜백 함수
  */
-function renderEmptyState(container) {
+function renderEmptyState(container, onRetry) {
   container.innerHTML = `
     <div class="project-state-message">
       <p>표시할 프로젝트가 없습니다.</p>
+      ${typeof onRetry === 'function' ? `
+      <button type="button" id="projects-empty-retry-btn" class="btn btn-secondary retry-btn">
+        다시 시도
+      </button>` : ''}
     </div>
   `;
+
+  // 다시 시도 버튼 클릭 이벤트 리스너 바인딩
+  const retryBtn = document.getElementById('projects-empty-retry-btn');
+  if (retryBtn && typeof onRetry === 'function') {
+    retryBtn.addEventListener('click', () => {
+      onRetry();
+    });
+  }
 }
 
 /**
@@ -158,20 +192,36 @@ function renderErrorState(container, errorMessage, onRetry) {
  * GitHub REST API를 비동기로 호출하고 상태 머신에 따라 적절한 UI 렌더링 함수를 분기 실행하는 함수.
  * 
  * [역할 및 존재 이유]
- * Java의 WebClient 비동기 통신 및 예외 처리 흐름과 동일하게,
- * fetch()와 async/await 구문으로 Non-blocking I/O 통신을 수행한다.
+ * fetch()와 async/await 구문으로 논블로킹 비동기 통신을 수행한다.
  * HTTP 응답 상태 코드(403 Rate Limit, 4xx, 5xx) 및 데이터 건수에 따라
  * Loading -> Success / Empty / Error의 4가지 상태 전이를 총괄한다.
  * 
  * @param {HTMLElement} container - 프로젝트 목록이 렌더링될 부모 DOM 컨테이너
+ * @param {boolean} [forceError=false] - 에러 상태 UI 확인을 위한 의도적 예외 발생 플래그
+ * @param {boolean} [forceEmpty=false] - 빈 상태 UI 확인을 위한 의도적 빈 결과 발생 플래그
  */
-async function fetchProjects(container) {
+// API 디자인 구림. 번들러 환경이면 boolean flag를 별도 함수명으로 빼야 함
+async function fetchProjects(container, forceError = false, forceEmpty = false) {
   // 1단계: 로딩 상태 렌더링
   renderLoadingState(container);
 
   try {
-    // 로딩 스피너 UI 시각적 확인을 위한 1초 인위적 지연 (테스트 후 필요시 제거 가능)
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // 로딩 스피너 UI 시각적 확인을 위한 1.5초 인위적 지연 (테스트 후 필요시 제거 가능)
+    // await으로 흐름을 중단시키고, Promise callback 함수는 1.5초 후 Promise를 filfilled로 바꾸는 resolve()를 수행한다.
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    // 실험용 의도적 오류 발생 플래그가 켜져 있으면 강제 예외 발생
+    if (forceError) {
+      throw new Error('[실험용 오류] 사용자가 의도적으로 발생시킨 네트워크 에러입니다. (GitHub 403 Rate Limit / 서버 장애 시뮬레이션)');
+    }
+
+    // 실험용 의도적 빈 상태 플래그가 켜져 있으면 빈 상태 렌더링
+    if (forceEmpty) {
+      renderEmptyState(container, () => {
+        fetchProjects(container);
+      });
+      return;
+    }
 
     // 2단계: 외부 GitHub REST API 비동기 호출
     const response = await fetch(GITHUB_API_URL);
@@ -191,7 +241,9 @@ async function fetchProjects(container) {
 
     // 3단계: 빈 배열 여부 검사 후 Empty 또는 Success 상태 분기
     if (!Array.isArray(repos) || repos.length === 0) {
-      renderEmptyState(container);
+      renderEmptyState(container, () => {
+        fetchProjects(container);
+      });
     } else {
       renderSuccessState(container, repos);
     }
@@ -199,6 +251,7 @@ async function fetchProjects(container) {
     // 4단계: 통신 장애 및 예외 발생 시 에러 상태 렌더링 (재시도 콜백 전달)
     const displayMessage = error.message || '네트워크 연결 상태를 확인해 주세요.';
     renderErrorState(container, displayMessage, () => {
+      // [다시 시도] 버튼 클릭 시에는 정상 복구 요청 실행
       fetchProjects(container);
     });
   }
@@ -209,6 +262,7 @@ async function fetchProjects(container) {
  * 
  * [역할 및 존재 이유]
  * DOM에서 `#projects-container` 요소를 탐색하고 유효한 경우 최초 1회 저장소 조회를 트리거한다.
+ * 실험용 의도적 빈 상태 버튼(#trigger-empty-btn) 및 오류 발생 버튼(#trigger-error-btn)이 존재할 경우 클릭 이벤트를 등록한다.
  */
 function initProjects() {
   const container = document.getElementById('projects-container');
@@ -216,5 +270,22 @@ function initProjects() {
     return;
   }
 
+  // 최초 정상 조회 실행
   fetchProjects(container);
+
+  // 실험용 의도적 빈 상태 테스트 버튼 이벤트 등록
+  const triggerEmptyBtn = document.getElementById('trigger-empty-btn');
+  if (triggerEmptyBtn) {
+    triggerEmptyBtn.addEventListener('click', () => {
+      fetchProjects(container, false, true);
+    });
+  }
+
+  // 실험용 의도적 오류 발생 버튼 이벤트 등록
+  const triggerErrorBtn = document.getElementById('trigger-error-btn');
+  if (triggerErrorBtn) {
+    triggerErrorBtn.addEventListener('click', () => {
+      fetchProjects(container, true, false);
+    });
+  }
 }
