@@ -211,7 +211,7 @@ async function fetchProjects(container, mode = FETCH_MODE.NORMAL) {
   renderLoadingState(container);
 
   try {
-    // 로딩 스피너 UI 시각적 확인을 위한 1.5초 인위적 지연 (테스트 후 필요시 제거 가능)
+    // 로딩 스피너 UI 시각적 확인을 위한 1.5초 의도적 지연
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     // 실험용 의도적 오류 발생 모드

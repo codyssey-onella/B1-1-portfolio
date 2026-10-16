@@ -10,7 +10,10 @@
 - **배포 URL**: [GitHub Pages 바로가기](https://codyssey-onella.github.io/B1-1-portfolio/)
 - **GitHub 저장소**: `https://github.com/codyssey-onella/B1-1-portfolio`
 
-![메인화면](images/main.png)
+![데스크탑](images/main.png)
+![모바일](images/mobile.png)
+![다크모드](images/dark.png)
+
 ---
 
 ## 2. 사용 기술 스택 (Tech Stack)
@@ -40,20 +43,5 @@ result/
 └── images/
     └── profile.svg         # 벡터 프로필 플레이스홀더 이미지
 ```
-
----
-
-## 4. 제약사항 준수 검증 (Compliance Checklist)
-
-과제 가이드라인에 정의된 모든 필수 제약사항을 철저히 준수했습니다:
-
-- [x] **외부 라이브러리 배제**: React, Vue, jQuery, Bootstrap, Tailwind 등 전무, 순수 HTML/CSS/JS 구현.
-- [x] **모던 JavaScript 문법**: `var` 사용 전면 금지 (`const`, `let`만 사용).
-- [x] **이벤트 바인딩 분리**: HTML 태그 내 `onclick` 등 인라인 이벤트 핸들러 일절 배제 (`addEventListener` 사용).
-- [x] **인라인 스타일 금지**: HTML 태그에 `style="..."` 속성 일절 사용하지 않고 외부 스타일시트(`css/style.css`)로 분리.
-- [x] **스크립트 비차단 로드**: 모든 `<script>` 태그에 `defer` 속성을 부여하여 DOM 파싱 차단 방지.
-- [x] **시맨틱 마크업**: `<div>` 남용 없이 `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>` 계층 구조화.
-- [x] **접근성(A11y)**: 모든 이미지에 유의미한 `alt` 속성 부여, 폼 `<label for="...">`와 `<input id="...">` 1:1 완벽 매핑.
-- [x] **API 예외 처리**: GitHub API 403 Rate Limit 및 오류 응답에 대한 폴백 UI와 재시도 액션 완비.
 
 ---
